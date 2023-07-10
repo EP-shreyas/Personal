@@ -1,0 +1,5 @@
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="imageUrl" type="String" />
+    <lightning:button label="Take Photo" onclick="{!c.takePhoto}" />
+    <img src="{!v.imageUrl}" />
+</aura:component>

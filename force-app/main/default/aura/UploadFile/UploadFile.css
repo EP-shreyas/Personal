@@ -1,0 +1,4 @@
+.THIS .slds-scrollable {
+    overflow: auto !important;
+    height: 30rem;
+}

@@ -1,0 +1,189 @@
+<template>
+    <!--    <h3 slot="title">
+            <lightning-icon icon-name="standard:timesheet" alternative-text="Event" size="small"></lightning-icon>
+            &nbsp;Upload Files
+        </h3>-->
+        <div class="slds-section slds-is-open">
+            <header class="slds-modal__header">
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Upload Documents</h2>
+            </header>
+
+            
+
+              <div aria-hidden="false" class="slds-section__content">
+            <lightning-card>
+                <div class="slds-col" style="border-style: ridge;">
+                    <span><lightning-layout  multiple-rows vertical-align="right" horizontal-align="right" >
+                        <lightning-layout-item flexibility="auto" padding="around-small" >
+                            <p><b>Note:</b></p>
+                            <ul>
+                            <li>1. Upto max 10 documents can be uploaded at a time.
+                            </li>
+                            <li>2. File size should be less than or equal to 100MB.</li>
+                        </ul>
+                        </lightning-layout-item></lightning-layout></span></div>
+    
+                <lightning-spinner if:true={isSpinner} variant="brand" size="large"> </lightning-spinner>
+                <lightning-layout>
+                        <table
+                            class="slds-table slds-table_cell-buffer slds-table_bordered slds-border_left slds-border_right  slds-p-top_xx-small slds-p-bottom_xx-small"
+                            aria-labelledby="element-with-table-label other-element-with-table-label">
+                            <thead>
+                                <tr>
+                                    <th >Document Type</th>
+                                    <th>Files</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+        
+
+        <template for:each={itemList} for:item="filterData" for:index="index">
+
+            <tr key={filterData}>
+                <td>
+
+                    <lightning-layout-item size="12" small-device-size="4">
+                        <template if:true={options}>
+
+                        <lightning-combobox
+                        name="Document"
+                        label="Select Document Type"
+                        value={filterData.documentType}
+                        placeholder="Select Document Type"
+                        options={options}
+                        onchange={handleChange}
+                        data-index={index} 
+                        disabled={isDocumentTypeDisabled}></lightning-combobox><!--disabled Added by Israr to make Document Type Read Only-->
+                        </template>
+    
+                </lightning-layout-item>
+                </td>
+                <td>
+                    <lightning-layout-item size="12" small-device-size="4">
+                      <!--  <lightning-input label="Attach Documents" name="fileUploader" class="slds-form-element" data-index={index}
+                        record-id={recordId}
+                        value={filterData.documentName}
+                        accept={acceptedFormats} onchange={handleUploadFinished} type="file"  multiple="true">
+                </lightning-input>-->
+                       <lightning-file-upload
+                        label="Attach Documents"
+                        name="fileUploader"
+                        accept={acceptedFormats}
+                        record-id={recordId}
+                        onuploadfinished={handleUploadFinished}
+                        data-index={index}
+                        value={filterData.documentName}
+                        multiple>    
+                    </lightning-file-upload>                              </lightning-layout-item>
+                </td>
+                <td>
+                    <lightning-layout-item size="12" small-device-size="4">
+                        <lightning-icon icon-name="action:new" data-index={filterData.id}
+            alternative-text="Add More" size="xx-small" title="Add More" onclick={handleAddRow}>
+        </lightning-icon>
+
+                <!--    <lightning-button-icon data-index={filterData.id} class="slds-float--right"
+                        icon-name="action:new" onclick={handleAddRow}></lightning-button-icon>
+                -->   </lightning-layout-item>
+                </td>
+            </tr>
+
+       <!--     <lightning-record-edit-form key={item.id} object-api-name="Contact">
+                <lightning-messages> </lightning-messages>
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+                        padding="around-small">
+
+                    <lightning-combobox
+                    name="Document"
+                    label="Select Document Type"
+                    value={value}
+                    placeholder="Select Document Type"
+                    options={options}
+                    onchange={handleChange} ></lightning-combobox>
+                </lightning-layout-item>
+                    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+                        padding="around-small">
+
+    <lightning-file-upload
+        label="Attach receipt"
+        name="fileUploader"
+        accept={acceptedFormats}
+        record-id={recordId}
+        onuploadfinished={handleUploadFinished}
+        multiple>    
+    </lightning-file-upload></lightning-layout-item>
+
+    <lightning-layout-item size="12" small-device-size="6" medium-device-size="4" large-device-size="2"
+    padding="around-small">
+<lightning-icon icon-name="action:new" access-key={item.id} id={index}
+            alternative-text="Add Row" size="small" title="Add Row" onclick={addRow}>
+        </lightning-icon>
+</lightning-layout-item>
+</lightning-layout>
+
+</lightning-record-edit-form>-->
+
+</template>
+
+</tbody>
+</table>
+</lightning-layout>
+
+    </lightning-card></div></div>
+<lightning-card>
+    <lightning-layout>
+        <template if:true={displayDataTable}>
+        <table
+            class="slds-table slds-table_cell-buffer slds-table_bordered slds-border_left slds-border_right  slds-p-top_xx-small slds-p-bottom_xx-small"
+            aria-labelledby="element-with-table-label other-element-with-table-label">
+            <thead>
+                <tr>
+                    <th>Document Name</th>
+                    <th>Document Type</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+<template for:each={itemListToDisplay} for:item="itemToDisplay" for:index="index">
+
+<tr key={itemToDisplay}>
+<td>
+
+    <lightning-layout-item size="12" small-device-size="4">
+       <p data-index={index}> {itemToDisplay.documentName}</p>
+</lightning-layout-item>
+</td>
+<td>
+    <lightning-layout-item size="12" small-device-size="4">
+        <p data-index={index}> {itemToDisplay.documentType}</p>
+          </lightning-layout-item>
+</td>
+<td>
+    <lightning-layout-item size="12" small-device-size="3">
+        <lightning-icon icon-name="action:delete" data-index={itemToDisplay.id}
+alternative-text="Delete" size="xx-small" title="Delete" onclick={handleDeleteRow}>
+</lightning-icon>
+
+   </lightning-layout-item>
+</td>
+</tr>
+
+
+</template>
+
+</tbody>
+</table>
+</template>
+</lightning-layout>
+
+    <div class="slds-m-top_large slds-grid slds-grid_align-center slds-align–absolute-center">
+        <lightning-button  label="Cancel" type="cancel" onclick={handleCancel}></lightning-button>
+        &nbsp;&nbsp;
+        <lightning-button variant="brand" label="Save" title="Save" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+    </div>
+</lightning-card>    
+</template>
